@@ -78,6 +78,20 @@ jobs:
       - name: Validate migrations
         run: atlas migrate validate --dir file://migrations
 
+      - name: Check migrations are in sync with Ent schema
+        run: |
+          output=$(atlas migrate diff --env local sync-check 2>&1)
+          echo "$output"
+          if echo "$output" | grep -q "no changes to be made"; then
+            echo "Migrations are in sync with Ent schema."
+          else
+            echo "ERROR: Ent schema has changes not reflected in migrations."
+            echo "Run 'make migrate name=<description>' to generate a new migration."
+            # Clean up generated file
+            git checkout -- migrations/
+            exit 1
+          fi
+
   integration:
     name: Integration Test
     runs-on: ubuntu-latest

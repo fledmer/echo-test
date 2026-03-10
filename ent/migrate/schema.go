@@ -17,6 +17,7 @@ var (
 		{Name: "body", Type: field.TypeString, Nullable: true, Size: 2147483647},
 		{Name: "ip", Type: field.TypeString, Nullable: true},
 		{Name: "created_at", Type: field.TypeTime},
+		{Name: "jopa_time", Type: field.TypeTime},
 	}
 	// RequestLogsTable holds the schema information for the "request_logs" table.
 	RequestLogsTable = &schema.Table{

@@ -6,6 +6,6 @@ CREATE TABLE "request_logs" (
   "headers" text NULL,
   "body" text NULL,
   "ip" character varying NULL,
-  "created_at" timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "created_at" timestamptz NOT NULL,
   PRIMARY KEY ("id")
 );

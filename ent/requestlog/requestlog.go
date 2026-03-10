@@ -25,6 +25,8 @@ const (
 	FieldIP = "ip"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
+	// FieldJopaTime holds the string denoting the jopa_time field in the database.
+	FieldJopaTime = "jopa_time"
 	// Table holds the table name of the requestlog in the database.
 	Table = "request_logs"
 )
@@ -38,6 +40,7 @@ var Columns = []string{
 	FieldBody,
 	FieldIP,
 	FieldCreatedAt,
+	FieldJopaTime,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -57,6 +60,8 @@ var (
 	PathValidator func(string) error
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
+	// DefaultJopaTime holds the default value on creation for the "jopa_time" field.
+	DefaultJopaTime func() time.Time
 )
 
 // OrderOption defines the ordering options for the RequestLog queries.
@@ -95,4 +100,9 @@ func ByIP(opts ...sql.OrderTermOption) OrderOption {
 // ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
+}
+
+// ByJopaTime orders the results by the jopa_time field.
+func ByJopaTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldJopaTime, opts...).ToFunc()
 }

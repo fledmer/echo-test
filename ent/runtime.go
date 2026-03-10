@@ -27,4 +27,8 @@ func init() {
 	requestlogDescCreatedAt := requestlogFields[5].Descriptor()
 	// requestlog.DefaultCreatedAt holds the default value on creation for the created_at field.
 	requestlog.DefaultCreatedAt = requestlogDescCreatedAt.Default.(func() time.Time)
+	// requestlogDescJopaTime is the schema descriptor for jopa_time field.
+	requestlogDescJopaTime := requestlogFields[6].Descriptor()
+	// requestlog.DefaultJopaTime holds the default value on creation for the jopa_time field.
+	requestlog.DefaultJopaTime = requestlogDescJopaTime.Default.(func() time.Time)
 }

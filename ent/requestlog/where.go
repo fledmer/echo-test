@@ -84,6 +84,11 @@ func CreatedAt(v time.Time) predicate.RequestLog {
 	return predicate.RequestLog(sql.FieldEQ(FieldCreatedAt, v))
 }
 
+// JopaTime applies equality check predicate on the "jopa_time" field. It's identical to JopaTimeEQ.
+func JopaTime(v time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldEQ(FieldJopaTime, v))
+}
+
 // MethodEQ applies the EQ predicate on the "method" field.
 func MethodEQ(v string) predicate.RequestLog {
 	return predicate.RequestLog(sql.FieldEQ(FieldMethod, v))
@@ -477,6 +482,46 @@ func CreatedAtLT(v time.Time) predicate.RequestLog {
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.RequestLog {
 	return predicate.RequestLog(sql.FieldLTE(FieldCreatedAt, v))
+}
+
+// JopaTimeEQ applies the EQ predicate on the "jopa_time" field.
+func JopaTimeEQ(v time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldEQ(FieldJopaTime, v))
+}
+
+// JopaTimeNEQ applies the NEQ predicate on the "jopa_time" field.
+func JopaTimeNEQ(v time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldNEQ(FieldJopaTime, v))
+}
+
+// JopaTimeIn applies the In predicate on the "jopa_time" field.
+func JopaTimeIn(vs ...time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldIn(FieldJopaTime, vs...))
+}
+
+// JopaTimeNotIn applies the NotIn predicate on the "jopa_time" field.
+func JopaTimeNotIn(vs ...time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldNotIn(FieldJopaTime, vs...))
+}
+
+// JopaTimeGT applies the GT predicate on the "jopa_time" field.
+func JopaTimeGT(v time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldGT(FieldJopaTime, v))
+}
+
+// JopaTimeGTE applies the GTE predicate on the "jopa_time" field.
+func JopaTimeGTE(v time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldGTE(FieldJopaTime, v))
+}
+
+// JopaTimeLT applies the LT predicate on the "jopa_time" field.
+func JopaTimeLT(v time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldLT(FieldJopaTime, v))
+}
+
+// JopaTimeLTE applies the LTE predicate on the "jopa_time" field.
+func JopaTimeLTE(v time.Time) predicate.RequestLog {
+	return predicate.RequestLog(sql.FieldLTE(FieldJopaTime, v))
 }
 
 // And groups predicates with the AND operator between them.

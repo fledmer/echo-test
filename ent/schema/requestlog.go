@@ -34,6 +34,10 @@ func (RequestLog) Fields() []ent.Field {
 			Default(time.Now).
 			Immutable().
 			Comment("Timestamp of the request"),
+		field.Time("jopa_time").
+			Default(time.Now).
+			Immutable().
+			Comment("Timestamp of the request"),
 	}
 }
 

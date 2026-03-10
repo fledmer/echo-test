@@ -39,6 +39,7 @@ type RequestLogMutation struct {
 	body          *string
 	ip            *string
 	created_at    *time.Time
+	jopa_time     *time.Time
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*RequestLog, error)
@@ -398,6 +399,42 @@ func (m *RequestLogMutation) ResetCreatedAt() {
 	m.created_at = nil
 }
 
+// SetJopaTime sets the "jopa_time" field.
+func (m *RequestLogMutation) SetJopaTime(t time.Time) {
+	m.jopa_time = &t
+}
+
+// JopaTime returns the value of the "jopa_time" field in the mutation.
+func (m *RequestLogMutation) JopaTime() (r time.Time, exists bool) {
+	v := m.jopa_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldJopaTime returns the old "jopa_time" field's value of the RequestLog entity.
+// If the RequestLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *RequestLogMutation) OldJopaTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldJopaTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldJopaTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldJopaTime: %w", err)
+	}
+	return oldValue.JopaTime, nil
+}
+
+// ResetJopaTime resets all changes to the "jopa_time" field.
+func (m *RequestLogMutation) ResetJopaTime() {
+	m.jopa_time = nil
+}
+
 // Where appends a list predicates to the RequestLogMutation builder.
 func (m *RequestLogMutation) Where(ps ...predicate.RequestLog) {
 	m.predicates = append(m.predicates, ps...)
@@ -432,7 +469,7 @@ func (m *RequestLogMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *RequestLogMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
 	if m.method != nil {
 		fields = append(fields, requestlog.FieldMethod)
 	}
@@ -450,6 +487,9 @@ func (m *RequestLogMutation) Fields() []string {
 	}
 	if m.created_at != nil {
 		fields = append(fields, requestlog.FieldCreatedAt)
+	}
+	if m.jopa_time != nil {
+		fields = append(fields, requestlog.FieldJopaTime)
 	}
 	return fields
 }
@@ -471,6 +511,8 @@ func (m *RequestLogMutation) Field(name string) (ent.Value, bool) {
 		return m.IP()
 	case requestlog.FieldCreatedAt:
 		return m.CreatedAt()
+	case requestlog.FieldJopaTime:
+		return m.JopaTime()
 	}
 	return nil, false
 }
@@ -492,6 +534,8 @@ func (m *RequestLogMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldIP(ctx)
 	case requestlog.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
+	case requestlog.FieldJopaTime:
+		return m.OldJopaTime(ctx)
 	}
 	return nil, fmt.Errorf("unknown RequestLog field %s", name)
 }
@@ -542,6 +586,13 @@ func (m *RequestLogMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreatedAt(v)
+		return nil
+	case requestlog.FieldJopaTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetJopaTime(v)
 		return nil
 	}
 	return fmt.Errorf("unknown RequestLog field %s", name)
@@ -630,6 +681,9 @@ func (m *RequestLogMutation) ResetField(name string) error {
 		return nil
 	case requestlog.FieldCreatedAt:
 		m.ResetCreatedAt()
+		return nil
+	case requestlog.FieldJopaTime:
+		m.ResetJopaTime()
 		return nil
 	}
 	return fmt.Errorf("unknown RequestLog field %s", name)

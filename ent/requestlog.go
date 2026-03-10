@@ -28,7 +28,9 @@ type RequestLog struct {
 	// Client IP address
 	IP string `json:"ip,omitempty"`
 	// Timestamp of the request
-	CreatedAt    time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// Timestamp of the request
+	JopaTime     time.Time `json:"jopa_time,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -41,7 +43,7 @@ func (*RequestLog) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case requestlog.FieldMethod, requestlog.FieldPath, requestlog.FieldHeaders, requestlog.FieldBody, requestlog.FieldIP:
 			values[i] = new(sql.NullString)
-		case requestlog.FieldCreatedAt:
+		case requestlog.FieldCreatedAt, requestlog.FieldJopaTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -100,6 +102,12 @@ func (_m *RequestLog) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.CreatedAt = value.Time
 			}
+		case requestlog.FieldJopaTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field jopa_time", values[i])
+			} else if value.Valid {
+				_m.JopaTime = value.Time
+			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
 		}
@@ -153,6 +161,9 @@ func (_m *RequestLog) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
 	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("jopa_time=")
+	builder.WriteString(_m.JopaTime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

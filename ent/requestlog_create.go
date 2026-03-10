@@ -88,6 +88,20 @@ func (_c *RequestLogCreate) SetNillableCreatedAt(v *time.Time) *RequestLogCreate
 	return _c
 }
 
+// SetJopaTime sets the "jopa_time" field.
+func (_c *RequestLogCreate) SetJopaTime(v time.Time) *RequestLogCreate {
+	_c.mutation.SetJopaTime(v)
+	return _c
+}
+
+// SetNillableJopaTime sets the "jopa_time" field if the given value is not nil.
+func (_c *RequestLogCreate) SetNillableJopaTime(v *time.Time) *RequestLogCreate {
+	if v != nil {
+		_c.SetJopaTime(*v)
+	}
+	return _c
+}
+
 // Mutation returns the RequestLogMutation object of the builder.
 func (_c *RequestLogCreate) Mutation() *RequestLogMutation {
 	return _c.mutation
@@ -127,6 +141,10 @@ func (_c *RequestLogCreate) defaults() {
 		v := requestlog.DefaultCreatedAt()
 		_c.mutation.SetCreatedAt(v)
 	}
+	if _, ok := _c.mutation.JopaTime(); !ok {
+		v := requestlog.DefaultJopaTime()
+		_c.mutation.SetJopaTime(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -149,6 +167,9 @@ func (_c *RequestLogCreate) check() error {
 	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "RequestLog.created_at"`)}
+	}
+	if _, ok := _c.mutation.JopaTime(); !ok {
+		return &ValidationError{Name: "jopa_time", err: errors.New(`ent: missing required field "RequestLog.jopa_time"`)}
 	}
 	return nil
 }
@@ -199,6 +220,10 @@ func (_c *RequestLogCreate) createSpec() (*RequestLog, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(requestlog.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
+	}
+	if value, ok := _c.mutation.JopaTime(); ok {
+		_spec.SetField(requestlog.FieldJopaTime, field.TypeTime, value)
+		_node.JopaTime = value
 	}
 	return _node, _spec
 }
