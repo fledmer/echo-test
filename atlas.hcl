@@ -7,6 +7,7 @@ data "composite_schema" "app" {
 env "local" {
   src = data.composite_schema.app.url
   dev = "docker://postgres/16/dev?search_path=public"
+  url = getenv("DATABASE_URL")
 
   migration {
     dir = "file://migrations"
@@ -19,11 +20,17 @@ env "local" {
   }
 }
 
-env "docker" {
+env "ci" {
   src = data.composite_schema.app.url
-  url = "postgres://postgres:postgres@db:5432/echodb?sslmode=disable"
+  dev = "docker://postgres/16/dev?search_path=public"
 
   migration {
     dir = "file://migrations"
+  }
+
+  lint {
+    git {
+      base = "main"
+    }
   }
 }
